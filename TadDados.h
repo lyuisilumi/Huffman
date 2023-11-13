@@ -9,13 +9,18 @@ void initDados(Dados **dados){
 	*dados = NULL;
 }
 
+void criaCaixa(Dados **caixa,int simb,int frequencia, char palavra[],char cod[]){
+	*caixa = (Dados*)malloc(sizeof(Dados));
+	(*caixa)->prox = NULL;
+	(*caixa)->freq = frequencia;
+	(*caixa)->simb = simb;
+	strcpy((*caixa)->palavra,palavra);
+	strcpy((*caixa)->cod,"a");
+}
+
 void insereLista(Dados **dados,int simb,int frequencia, char palavra[],char cod[]){
-	Dados *caixa = (Dados*)malloc(sizeof(Dados)),*aux;
-	caixa->prox = NULL;
-	caixa->freq = frequencia;
-	caixa->simb = simb;
-	strcpy(caixa->palavra,palavra);
-	strcpy(caixa->cod,"a");
+	Dados *caixa,*aux;
+	criaCaixa(&caixa,simb,frequencia,palavra,cod);
 	if(*dados == NULL)
 		*dados = caixa;
 	else{
