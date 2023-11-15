@@ -15,7 +15,7 @@ void criaCaixa(Dados **caixa,int simb,int frequencia, char palavra[],char cod[])
 	(*caixa)->freq = frequencia;
 	(*caixa)->simb = simb;
 	strcpy((*caixa)->palavra,palavra);
-	strcpy((*caixa)->cod,"a");
+	strcpy((*caixa)->cod,cod);
 }
 
 void insereLista(Dados **dados,int simb,int frequencia, char palavra[],char cod[]){

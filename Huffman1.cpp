@@ -5,6 +5,19 @@
 #include "TadArvore.h"
 #include "TadDados.h"
 
+void salvarArquivoBinario(FILE **arq, Dados *dados){
+	Dados aux;
+	while(dados != NULL){
+		srtcpy(aux.cod,dados->cod);
+		aux.freq = dados->freq;
+		aux.simb = dados->simb;
+		strcpy(aux.palavra,dados->palavra);
+		aux.prox = NULL;
+		fwrite(&aux,sizeof(aux),1,*arq);
+		dados = dados->prox
+	}
+}
+
 char verificaPalavra(Dados **dados,char palavra[]){
 	Dados *aux;
 	aux = *dados;
@@ -17,11 +30,21 @@ char verificaPalavra(Dados **dados,char palavra[]){
 	return 0;
 }
 
+void ordenaLista(Dados **dados){
+	Dados *i = *dados,*j;
+	
+	for(i = *dados; i != NULL; i = i->prox){
+		for(j = *dados; j != NULL; j = j->prox){
+			
+		}		
+	}	
+}
+
 void pegarFrequencia(Dados **dados,char frase[]){
-	char palavra[50],espaco[2]= " ";
+	char palavra[50],space[2] = " ";
 	int pos,i=0,simb=0,cont=0;
 	for(pos = 0; pos<strlen(frase); pos++){
-		if(frase[pos] != ' '){
+		if(frase[pos] != ' ' && frase[pos] != '.'){
 			palavra[i] = frase[pos];
 			palavra[i+1] = '\0';
 			i++;
@@ -31,21 +54,21 @@ void pegarFrequencia(Dados **dados,char frase[]){
 				i=0;
 			}
 			else{
-				insereLista(&*dados,simb,1,palavra,NULL);
+				insereLista(&*dados,simb,1,palavra,space);
 				simb++;
 				i=0;	
 			}
 			if(cont == 0){
-				insereLista(&*dados,simb,1,espaco,NULL);
+				insereLista(&*dados,simb,1,space,space);
 				simb++;
 				cont++;
 			}
 			else{
-				verificaPalavra(&(*dados),espaco);
+				verificaPalavra(&(*dados),space);
 			}
 		}
 	}
-	insereLista(&*dados,simb,1,palavra,NULL);
+	ordenaLista(&(*dados));
 }
 
 void exibeH(Tree *tree){
