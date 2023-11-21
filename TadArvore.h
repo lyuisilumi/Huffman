@@ -22,12 +22,12 @@ Tree *cria_No(int simb, int frequencia){
 	return no;
 }
 
-void fazNo(Lista **lista, Lista **auxP, Lista **antP, int simb, int soma){
+void fazNo(Lista **lista, Lista **segundo, Lista **primeiro, int simb, int soma){
 	Lista *ant,*aux, *novo = (Lista*)malloc(sizeof(Lista));
 	novo->prox = NULL; 
 	novo->no = cria_No(simb,soma);
-	novo->no->esq = (*antP)->no;
-	novo->no->dir = (*auxP)->no;
+	novo->no->esq = (*primeiro)->no;
+	novo->no->dir = (*segundo)->no;
 	if((*lista) == NULL){
 		*lista = novo;
 	}

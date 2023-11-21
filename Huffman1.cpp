@@ -155,17 +155,17 @@ void criaListaArvore(Dados *dado, Lista **lista){
 }
 
 void criaArvore(Lista **lista){
-	Lista *ant,*aux;
+	Lista *primeiro,*segundo;
 	int soma;
-	ant = *lista;
-	aux = ant->prox;
-	while(aux != NULL){
-		soma = (aux->no->frq) + (ant->no->frq);
-		fazNo(&*lista,&aux,&ant,-1,soma);
-		excluir(&*lista,ant->no->simb);
-		excluir(&*lista,aux->no->simb);
-		ant = *lista;
-		aux = ant->prox;
+	primeiro = *lista;
+	segundo = primeiro->prox;
+	while(segundo != NULL){
+		soma = (segundo->no->frq) + (primeiro->no->frq);
+		fazNo(&*lista,&segundo,&primeiro,-1,soma);
+		excluir(&*lista,primeiro->no->simb);
+		excluir(&*lista,segundo->no->simb);
+		primeiro = *lista;
+		segundo = primeiro->prox;;
 	}
 }
 
