@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <Windows.h>
 #include <locale.h>
 #include "TadArvore.h"
 #include "TadDados.h"
@@ -72,6 +73,14 @@ void ordenaLista(Dados **dados){
 	}
 }
 
+void ExibeConteudoListaAravore(Lista **lista){
+	Lista *aux = *lista;
+	while(aux != NULL){
+		printf("%d\n",aux->no->frq);	
+		aux = aux->prox;
+	}
+}
+
 void ExibeConteudoListaEncadeada(Dados *dados){
 	Dados *aux = dados;
 	while(aux != NULL){
@@ -109,7 +118,6 @@ void pegarFrequencia(Dados **dados,char frase[]){
 		}
 	}
 	ExibeConteudoListaEncadeada(*dados);
-	printf("\n\n");
 	ordenaLista(&(*dados));
 }
 
@@ -120,22 +128,71 @@ void exibeH(Tree *tree){
 		exibeH(tree->dir);
 		for(i=0; i<5*n; i++)
 			printf(" ");
-		printf("(%d, %d)",tree->simb,tree->frq);
+		printf("(%d, %d)\n",tree->simb,tree->frq);
 		exibeH(tree->esq);
 		n--;
 	}
 }
 
+void criaListaArvore(Dados *dado, Lista **lista){
+	Lista *novo,*aux;
+	while(dado != NULL){
+		novo = (Lista*)malloc(sizeof(Lista));
+		novo->no = cria_No(dado->simb,dado->freq);
+		novo->prox = NULL;
+		if((*lista) == NULL){
+			*lista = novo;
+		}
+		else{
+			aux = *lista;
+			while(aux->prox != NULL){
+				aux = aux->prox;
+			}
+			aux->prox = novo;
+		}	
+		dado = dado->prox;
+	}
+}
+
+void criaArvore(Lista **lista){
+	Lista *ant,*aux;
+	int soma;
+	ant = *lista;
+	aux = ant->prox;
+	while(aux != NULL){
+		soma = (aux->no->frq) + (ant->no->frq);
+		fazNo(&*lista,&aux,&ant,-1,soma);
+		excluir(&*lista,ant->no->simb);
+		excluir(&*lista,aux->no->simb);
+		ant = *lista;
+		aux = ant->prox;
+	}
+}
+
+void telacheia() {
+	keybd_event ( VK_MENU, 0x38, 0, 0 );
+	keybd_event ( VK_SPACE, 0x39, 0, 0 );
+	keybd_event(0x58,0,0,0);
+	keybd_event ( VK_MENU, 0x38, KEYEVENTF_KEYUP, 0 );
+	keybd_event ( VK_SPACE, 0x39, KEYEVENTF_KEYUP, 0 );
+	keybd_event(0x58,0,KEYEVENTF_KEYUP,0);
+}
+
 int main(void){
 	setlocale(LC_ALL,"Portuguese");
+	telacheia();
 	Dados *dados,*aux;
 	Lista *lista;
 	char frase[500];
-	strcpy(frase,"Sem sacar que o espinho Ã© seco. Sem sacar que seco Ã© ser sol. Sem sacar que algum espinho seco secarÃ¡. Se acabar nÃ£o acostumando. Se acabar parado calado. Se acabar baixinho chorando. Se acabar meio abandonado.");
+	strcpy(frase,"Sem sacar que o espinho é seco. Sem sacar que seco é ser sol. Sem sacar que algum espinho seco secará. Se acabar não acostumando. Se acabar parado calado.Se acabar baixinho chorando. Se acabar meio abandonado.");
 	initDados(&dados);
 	initLista(&lista);
 	pegarFrequencia(&dados,frase);
+	criaListaArvore(dados,&lista);
+	criaArvore(&lista);
 	printf("\n\n\n");
 	ExibeConteudoListaEncadeada(dados);
+	printf("\n\n\n");
+	exibeH(lista->no);
 	return 0;
 }
