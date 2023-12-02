@@ -8,7 +8,6 @@
 
 void salvarArquivoBinario(FILE *arq, Dados *dados){
 	Dados aux;
-	printf("\n\n\n\n\n");
 	printf("-------------- Arquivo Binario Salvar --------------\n");
 	while(dados != NULL){
 		printf("%s\t%d\t%d\t%s\n",dados->palavra,dados->freq,dados->simb,dados->cod);
@@ -254,27 +253,19 @@ int main(void){
 	pegarFrequencia(&dados,frase);
 	criaListaArvore(dados,&lista);
 	criaArvore(&lista);
-	//printf("\n\n\n");
-	//ExibeConteudoListaEncadeada(dados);
-	//printf("\n\n\n");
-	//exibeH(lista->no);
-	//printf("\n\n\n");
 	pre_ordem(lista->no,&dados,cod);
-	printf("\n\n\n");
-	
-	
 	//Salvar o conteudo de uma lista em um arquivo binario
 	FILE *arqbinG = fopen("CodigoHuffman.dat","wb");
 	salvarArquivoBinario(arqbinG,dados);
-	printf("\n\n\n");
 	fclose(arqbinG);
-	
-	
 	//Digitar umas palavras que contem dentro da frase para poder codificar e gravar em um arquivo texto
 	strcpy(frase_cod,"sacar o espinho seco é acabar meio abandonado.");
 	printf("Palavra a ser codificada: %s\n",frase_cod);
 	initDados(&aux);
 	InsereListaFrase(&aux,frase_cod);
 	pega_cod_grava_arq(aux,dados,cod);
+	getch();
+	system("cls");
+	exibeH(lista->no);
 	return 0;
 }

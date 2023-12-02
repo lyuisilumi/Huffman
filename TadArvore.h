@@ -22,6 +22,8 @@ Tree *cria_No(int simb, int frequencia){
 	return no;
 }
 
+
+
 void fazNo(Lista **lista, Lista **segundo, Lista **primeiro, int simb, int soma){
 	Lista *ant,*aux, *novo = (Lista*)malloc(sizeof(Lista));
 	novo->prox = NULL; 
