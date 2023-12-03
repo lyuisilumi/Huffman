@@ -22,7 +22,18 @@ Tree *cria_No(int simb, int frequencia){
 	return no;
 }
 
-
+void exibeH(Tree *tree){
+	static int n = -1,i;
+	if(tree != NULL){
+		n++;
+		exibeH(tree->dir);
+		for(i=0; i<5*n; i++)
+			printf(" ");
+		printf("(%d, %d)\n",tree->simb,tree->frq);
+		exibeH(tree->esq);
+		n--;
+	}
+}
 
 void fazNo(Lista **lista, Lista **segundo, Lista **primeiro, int simb, int soma){
 	Lista *ant,*aux, *novo = (Lista*)malloc(sizeof(Lista));
@@ -67,3 +78,5 @@ void excluir(Lista **lista, int simb){
 		ant->prox = aux->prox;
 	free(aux);
 }
+
+

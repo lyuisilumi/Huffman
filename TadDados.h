@@ -9,14 +9,6 @@ void initDados(Dados **dados){
 	*dados = NULL;
 }
 
-void ExibeConteudoListaEncadeada(Dados *dados){
-	Dados *aux = dados;
-	while(aux != NULL){
-		printf("%s\t%d\t%d\t%s\n",aux->palavra,aux->freq,aux->simb,aux->cod);	
-		aux = aux->prox;
-	}
-}
-
 void criaCaixa(Dados **caixa,int simb,int frequencia, char palavra[],char cod[]){
 	*caixa = (Dados*)malloc(sizeof(Dados));
 	(*caixa)->prox = NULL;

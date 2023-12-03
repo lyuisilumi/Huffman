@@ -3,28 +3,7 @@
 #include <string.h>
 #include <Windows.h>
 #include <locale.h>
-#include "TadArvore.h"
-#include "TadDados.h"
-
-void criaListaArvore(Dados *dado, Lista **lista){
-	Lista *novo,*aux;
-	while(dado != NULL){
-		novo = (Lista*)malloc(sizeof(Lista));
-		novo->no = cria_No(dado->simb,dado->freq);
-		novo->prox = NULL;
-		if((*lista) == NULL){
-			*lista = novo;
-		}
-		else{
-			aux = *lista;
-			while(aux->prox != NULL){
-				aux = aux->prox;
-			}
-			aux->prox = novo;
-		}	
-		dado = dado->prox;
-	}
-}
+#include "Tad.h"
 
 void leituraArquivoBinario(FILE *arq){
 	Dados aux;
@@ -41,47 +20,48 @@ void leituraArquivoBinario(FILE *arq){
 	printf("-----------------------------------------------------\n");
 }
 
-void criaArvore(Lista **lista){
-	Lista *primeiro,*segundo;
-	int soma;
-	primeiro = *lista;
-	segundo = primeiro->prox;
-	while(segundo != NULL){
-		soma = (segundo->no->frq) + (primeiro->no->frq);
-		fazNo(&*lista,&segundo,&primeiro,-1,soma);
-		excluir(&*lista,primeiro->no->simb);
-		excluir(&*lista,segundo->no->simb);
-		primeiro = *lista;
-		segundo = primeiro->prox;
+void busca(Dados **dados,int simb, char frase[],int *num){
+	char palavra[50];
+	int i=0;
+	Dados *aux = *dados;
+	while(aux!=NULL && aux->simb!=simb)
+		aux = aux -> prox;
+	if(aux!=NULL)
+	{
+		while(aux->palavra[i]!='\0')
+		{
+			strcpy(palavra,aux->palavra);
+			frase[*num]=palavra[i];
+			i++;
+			(*num)++;
+		}
 	}
+	frase[*num]='\0';
 }
 
-void telacheia() {
-	keybd_event ( VK_MENU, 0x38, 0, 0 );
-	keybd_event ( VK_SPACE, 0x39, 0, 0 );
-	keybd_event(0x58,0,0,0);
-	keybd_event ( VK_MENU, 0x38, KEYEVENTF_KEYUP, 0 );
-	keybd_event ( VK_SPACE, 0x39, KEYEVENTF_KEYUP, 0 );
-	keybd_event(0x58,0,KEYEVENTF_KEYUP,0);
-}
-
-void exibeH(Tree *tree){
-	static int n = -1,i;
-	if(tree != NULL){
-		n++;
-		exibeH(tree->dir);
-		for(i=0; i<5*n; i++)
-			printf(" ");
-		printf("(%d, %d)\n",tree->simb,tree->frq);
-		exibeH(tree->esq);
-		n--;
+void frase(Dados **dados,Tree *no,char cod[],char frase[]){
+	int i=0,j=0;
+	Tree *aux = no;
+	while(cod[i]!='\0')
+	{	
+		if(aux->simb!=-1)
+		{
+			busca(&*dados,aux->simb,frase,&j);
+			aux = no;
+		}
+		if(cod[i]=='0')
+			aux = aux->esq;
+		else
+		if(cod[i]=='1')
+			aux = aux->dir;
+		i++;
 	}
 }
 
 int main(void){
 	setlocale(LC_ALL,"Portuguese");
 	telacheia();
-	char codH[500];
+	char codH[501],fras[500];
 	Dados *dados;
 	Lista *lista;
 	FILE *arqtxtL = fopen("CodigoHuffman.txt","r+");
@@ -94,10 +74,13 @@ int main(void){
 	criaArvore(&lista);
 	rewind(arqbinL);
 	leituraArquivoBinario(arqbinL);
-	fclose(arqbinL);
 	getch();
 	system("cls");
 	exibeH(lista->no);
+	frase(&dados,(lista->no),codH,fras);
+	getch();
+	system("cls");
+	printf("%s",fras);
 	return 0;
 }
 

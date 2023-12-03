@@ -3,8 +3,7 @@
 #include <string.h>
 #include <Windows.h>
 #include <locale.h>
-#include "TadArvore.h"
-#include "TadDados.h"
+#include "Tad.h"
 
 void salvarArquivoBinario(FILE *arq, Dados *dados){
 	Dados aux;
@@ -84,13 +83,7 @@ void ExibeConteudoListaAravore(Lista **lista){
 	}
 }
 
-void ExibeConteudoListaEncadeada(Dados *dados){
-	Dados *aux = dados;
-	while(aux != NULL){
-		printf("%s\t%d\t%d\t%s\n",aux->palavra,aux->freq,aux->simb,aux->cod);	
-		aux = aux->prox;
-	}
-}
+
 
 void InsereListaFrase(Dados **dados, char frase[]){
 	char palavra[50],space[2] = " ";
@@ -146,54 +139,6 @@ void pegarFrequencia(Dados **dados,char frase[]){
 	ordenaLista(&(*dados));
 }
 
-void exibeH(Tree *tree){
-	static int n = -1,i;
-	if(tree != NULL){
-		n++;
-		exibeH(tree->dir);
-		for(i=0; i<5*n; i++)
-			printf(" ");
-		printf("(%d, %d)\n",tree->simb,tree->frq);
-		exibeH(tree->esq);
-		n--;
-	}
-}
-
-void criaListaArvore(Dados *dado, Lista **lista){
-	Lista *novo,*aux;
-	while(dado != NULL){
-		novo = (Lista*)malloc(sizeof(Lista));
-		novo->no = cria_No(dado->simb,dado->freq);
-		novo->prox = NULL;
-		if((*lista) == NULL){
-			*lista = novo;
-		}
-		else{
-			aux = *lista;
-			while(aux->prox != NULL){
-				aux = aux->prox;
-			}
-			aux->prox = novo;
-		}	
-		dado = dado->prox;
-	}
-}
-
-void criaArvore(Lista **lista){
-	Lista *primeiro,*segundo;
-	int soma;
-	primeiro = *lista;
-	segundo = primeiro->prox;
-	while(segundo != NULL){
-		soma = (segundo->no->frq) + (primeiro->no->frq);
-		fazNo(&*lista,&segundo,&primeiro,-1,soma);
-		excluir(&*lista,primeiro->no->simb);
-		excluir(&*lista,segundo->no->simb);
-		primeiro = *lista;
-		segundo = primeiro->prox;
-	}
-}
-
 void pre_ordem(Tree *t,Dados **dados ,char cod[]){
 	Dados *aux = *dados;
 	if(t != NULL){
@@ -231,22 +176,13 @@ void pega_cod_grava_arq(Dados *aux, Dados *dados,char palavra[]){
 	fclose(arq);
 }
 
-void telacheia() {
-	keybd_event ( VK_MENU, 0x38, 0, 0 );
-	keybd_event ( VK_SPACE, 0x39, 0, 0 );
-	keybd_event(0x58,0,0,0);
-	keybd_event ( VK_MENU, 0x38, KEYEVENTF_KEYUP, 0 );
-	keybd_event ( VK_SPACE, 0x39, KEYEVENTF_KEYUP, 0 );
-	keybd_event(0x58,0,KEYEVENTF_KEYUP,0);
-}
-
 int main(void){
 	setlocale(LC_ALL,"Portuguese");
 	telacheia();
 	Dados *dados,*aux;
 	Lista *lista;
 	char frase[500], frase_cod[500], cod[]="";
-	strcpy(frase,"Sem sacar que o espinho é seco. Sem sacar que seco é ser sol. Sem sacar que algum espinho seco secará. Se acabar não acostumando. Se acabar parado calado.Se acabar baixinho chorando. Se acabar meio abandonado.");
+	strcpy(frase,"Sem sacar que o espinho é seco Sem sacar que seco é ser sol Sem sacar que algum espinho seco secará Se acabar não acostumando Se acabar parado calado Se acabar baixinho chorando Se acabar meio abandonado.");
 	initDados(&dados);
 	initDados(&aux);
 	initLista(&lista);
@@ -259,7 +195,7 @@ int main(void){
 	salvarArquivoBinario(arqbinG,dados);
 	fclose(arqbinG);
 	//Digitar umas palavras que contem dentro da frase para poder codificar e gravar em um arquivo texto
-	strcpy(frase_cod,"sacar o espinho seco é acabar meio abandonado.");
+	strcpy(frase_cod,"Sem sacar que o espinho é seco Sem sacar que seco é ser sol Sem sacar que algum espinho seco secará Se acabar não acostumando Se acabar parado calado Se acabar baixinho chorando Se acabar meio abandonado.");
 	printf("Palavra a ser codificada: %s\n",frase_cod);
 	initDados(&aux);
 	InsereListaFrase(&aux,frase_cod);
