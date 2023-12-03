@@ -187,7 +187,7 @@ int main(void){
 	Dados *dados,*aux;
 	Lista *lista;
 	char frase[500], frase_cod[500], cod[]="";
-	strcpy(frase,"Sem sacar que o espinho é seco Sem sacar que seco é ser sol Sem sacar que algum espinho seco secará Se acabar não acostumando Se acabar parado calado Se acabar baixinho chorando Se acabar meio abandonado.");
+	strcpy(frase,"Sem sacar que o espinho é seco. Sem sacar que seco é ser sol. Sem sacar que algum espinho seco secará. Se acabar não acostumando. Se acabar parado calado. Se acabar baixinho chorando. Se acabar meio abandonado.");
 	initDados(&dados);
 	initDados(&aux);
 	initLista(&lista);
