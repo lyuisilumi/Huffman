@@ -63,7 +63,7 @@ void ordenaLista(Dados **dados){
 				strcpy(atual->cod,aux->cod);
 				strcpy(atual->palavra,aux->palavra);
 				
-				//Copiei os conteudos das vari√°veis para o Aux
+				//Copiei os conteudos das vari√É¬°veis para o Aux
 				aux->freq = freq;
 				aux->simb = simb;
 				strcpy(aux->cod,cod);
@@ -98,9 +98,14 @@ void InsereListaFrase(Dados **dados, char frase[]){
 			insereLista(&*dados,simb,1,palavra,space);
 			simb++;
 			i=0;
+			if(frase[pos] == '.'){
+				palavra[i] = '\0';
+			}
+			else
 			if(frase[pos] == ' '){
 				insereLista(&*dados,simb,1," ",space);
 				simb++;
+				i=0;
 			}
 		}
 	}
@@ -182,7 +187,7 @@ int main(void){
 	Dados *dados,*aux;
 	Lista *lista;
 	char frase[500], frase_cod[500], cod[]="";
-	strcpy(frase,"Sem sacar que o espinho È seco Sem sacar que seco È ser sol Sem sacar que algum espinho seco secar· Se acabar n„o acostumando Se acabar parado calado Se acabar baixinho chorando Se acabar meio abandonado.");
+	strcpy(frase,"Sem sacar que o espinho √© seco Sem sacar que seco √© ser sol Sem sacar que algum espinho seco secar√° Se acabar n√£o acostumando Se acabar parado calado Se acabar baixinho chorando Se acabar meio abandonado.");
 	initDados(&dados);
 	initDados(&aux);
 	initLista(&lista);
@@ -195,7 +200,7 @@ int main(void){
 	salvarArquivoBinario(arqbinG,dados);
 	fclose(arqbinG);
 	//Digitar umas palavras que contem dentro da frase para poder codificar e gravar em um arquivo texto
-	strcpy(frase_cod,"Sem sacar que o espinho È seco Sem sacar que seco È ser sol Sem sacar que algum espinho seco secar· Se acabar n„o acostumando Se acabar parado calado Se acabar baixinho chorando Se acabar meio abandonado.");
+	strcpy(frase_cod,"Sem sacar que o espinho √© seco. Sem sacar que seco √© ser sol. Sem sacar que algum espinho seco secar√°. Se acabar n√£o acostumando. Se acabar parado calado. Se acabar baixinho chorando. Se acabar meio abandonado.");
 	printf("Palavra a ser codificada: %s\n",frase_cod);
 	initDados(&aux);
 	InsereListaFrase(&aux,frase_cod);
